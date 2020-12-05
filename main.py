@@ -1,3 +1,36 @@
+import numpy as np
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+from ypstruct import structure
+import ga
+import csv
+
+#parameters
+pM = 0.1
+pC = 0.1
+trial_count = 1
+benchmark = 4 #use 1 or 4
+
+OPTIONS_M = ((0, -3, 5),
+             (0, -3, 5),
+             (0, -4, 5),
+             (0, -3, 6),
+             (0, -3, 5),
+             (0, -4, 5),
+             (0, -4, 5)
+             )
+OPTIONS_m = ((0, -4, 5),
+             (0, -4, 5),
+             (0, -3, 5),
+             (0, -3, 5),
+             (0, -4, 5),
+             (0, -3, 6),
+             (0, 5)
+             )
+MOD_M = ('M', 'm', 'm', 'M', 'M', 'm', 'd')
+MOD_m = ('m', 'd', 'M', 'm', 'M', 'M', 'M')
+
 def check_interval(chord):
     res = 0
     if chord[2] - chord[1] > 12 or chord[2] - chord[1] < 0:
@@ -8,7 +41,6 @@ def check_interval(chord):
     if chord[1] == chord[2] or chord[2] == chord[3]:
         res += 1.4
     return res
-
 
 def check_2_chords(c1, c2):
     res = 0
@@ -30,7 +62,7 @@ def check_2_chords(c1, c2):
             res += .7
 
     return res
-
+'''fix this'''
 def evalNumErr(ton, individual):
     #Fitness function
     res = 0
@@ -48,3 +80,55 @@ def evalNumErr(ton, individual):
             if item[1] in [1, 2, 3, 4, 5, 6]:
                 res += 6
     return (res,)
+
+problem= structure()
+##definition of cost function
+problem.costfunc = evalNumErr
+##defenition of search space
+problem.nvar = 4
+problem.varmin = 0 
+problem.varmax = 1 
+
+#GA Parameters
+params=structure()
+## maximum iteration
+params.maxit = 100  
+
+params.npop = 50
+params.beta = 1
+
+params.pc = 1
+params.gamma = pC
+## mutation parameters
+params.mu = pM
+params.sigma = 0.1
+
+x=0
+max = []
+min = []
+avg = []
+#Classic
+#Sharing
+while x < trial_count:
+    #Run GA
+    out = ga.run(problem, params,"classic")
+    max.append(np.max(out.bestcost))
+    min.append(np.min(out.worstcost))
+    avg.append(sum(out.bestcost)/len(out.bestcost))
+    print("Run " + str(x+1) + " done")
+    x += 1
+
+print("Max: " + str(np.max(max)))
+print("Min: "+ str(np.min(avg)))
+print("Average: "+ str(sum(avg)/10))
+#Results
+#plt.plot(out.bestcost)
+plt.plot(out.bestcost, label = "best")
+plt.plot(out.worstcost, label = "worst")
+plt.axis([0,params.maxit,0,1])
+plt.xlabel("Iteration")
+plt.ylabel("Best Cost")
+plt.title("Genetic Algorithm (GA)")
+plt.grid(True)
+plt.legend()
+plt.show()
