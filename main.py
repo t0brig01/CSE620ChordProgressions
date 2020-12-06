@@ -54,6 +54,9 @@ def check_2_chords(c1, c2):
         elif inter1 == 12 and inter2 == 12:
             res += 15
 
+    if c1[0] == c2[0] and c1[1] == c2[1]:
+        res += 30
+        
     for note1, note2 in zip(c1, c2):
         if abs(note1 - note2) == 7:  # 7 equals 5° interval
             res -= 1
@@ -109,14 +112,15 @@ while x < trial_count:
 print("Max: " + str(np.max(max)))
 print("Min: "+ str(np.min(avg)))
 print("Average: "+ str(sum(avg)/10))
+print(out.bestsol)
 #Results
 #plt.plot(out.bestcost)
-plt.plot(out.bestcost, label = "best")
-plt.plot(out.worstcost, label = "worst")
-plt.axis([0,params.maxit,0,1])
-plt.xlabel("Iteration")
-plt.ylabel("Best Cost")
-plt.title("Genetic Algorithm (GA)")
-plt.grid(True)
-plt.legend()
-plt.show()
+# plt.plot(out.bestcost, label = "best")
+# plt.plot(out.worstcost, label = "worst")
+# plt.axis([0,params.maxit,0,1])
+# plt.xlabel("Iteration")
+# plt.ylabel("Best Cost")
+# plt.title("Genetic Algorithm (GA)")
+# plt.grid(True)
+# plt.legend()
+# plt.show()

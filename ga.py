@@ -179,14 +179,14 @@ def removearray(L,arr):
 
 def initChords(key,nvar):
     chordprog = []
-    for _ in range(0,nvar):
+    for _ in range(nvar):
         chordprog.append(createChord(key))
 
     return chordprog
 
 def createChord(key):
-    n1 = np.random.choice(key) * np.random.choice([5,6,7])
-    n2 = np.random.choice(key) * np.random.choice([5,6,7])
+    n1 = np.random.choice(key) + (np.random.choice([4,5,6])*12)
+    n2 = np.random.choice(key) + (np.random.choice([4,5,6])*12)
 
     chord = []
     if n1 == n2:
