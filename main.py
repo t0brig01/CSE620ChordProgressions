@@ -83,11 +83,11 @@ def ChordProgToPic(pop):
         chordString = ""
         for note in chord:
             chordString += convert[note%12]
-            if np.floor(note/12)-1 == 3:
+            if np.floor(note/12)-1 == 4:
                 chordString += "' "
-            elif np.floor(note/12)-1 == 4:
-                chordString += "'' "
             elif np.floor(note/12)-1 == 5:
+                chordString += "'' "
+            elif np.floor(note/12)-1 == 6:
                 chordString += "''' "
             else:
                 chordString += " "
