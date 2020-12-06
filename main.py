@@ -10,36 +10,34 @@ import csv
 pM = 0.1
 pC = 0.1
 trial_count = 1
-benchmark = 4 #use 1 or 4
 
-OPTIONS_M = ((0, -3, 5),
-             (0, -3, 5),
-             (0, -4, 5),
-             (0, -3, 6),
-             (0, -3, 5),
-             (0, -4, 5),
-             (0, -4, 5)
-             )
-OPTIONS_m = ((0, -4, 5),
-             (0, -4, 5),
-             (0, -3, 5),
-             (0, -3, 5),
-             (0, -4, 5),
-             (0, -3, 6),
-             (0, 5)
-             )
-MOD_M = ('M', 'm', 'm', 'M', 'M', 'm', 'd')
-MOD_m = ('m', 'd', 'M', 'm', 'M', 'M', 'M')
+# OPTIONS_M = ((0, -3, 5),
+#              (0, -3, 5),
+#              (0, -4, 5),
+#              (0, -3, 6),
+#              (0, -3, 5),
+#              (0, -4, 5),
+#              (0, -4, 5)
+#              )
+# OPTIONS_m = ((0, -4, 5),
+#              (0, -4, 5),
+#              (0, -3, 5),
+#              (0, -3, 5),
+#              (0, -4, 5),
+#              (0, -3, 6),
+#              (0, 5)
+#              )
+# MOD_M = ('M', 'm', 'm', 'M', 'M', 'm', 'd')
+# MOD_m = ('m', 'd', 'M', 'm', 'M', 'M', 'M')
 
 def check_interval(chord):
     res = 0
-    if chord[2] - chord[1] > 12 or chord[2] - chord[1] < 0:
+    #Higher than an octave = bad
+    if chord[1] - chord[0] > 12 or chord[1] - chord[0] < 0:
         res += 15
-    if chord[3] - chord[2] > 12 or chord[3] - chord[2] < 0:
+    #same note = bad
+    if chord[0] == chord[1]:
         res += 15
-
-    if chord[1] == chord[2] or chord[2] == chord[3]:
-        res += 1.4
     return res
 
 def check_2_chords(c1, c2):
@@ -56,38 +54,28 @@ def check_2_chords(c1, c2):
         elif inter1 == 12 and inter2 == 12:
             res += 15
 
-    # Check for big intervals
-    for note1, note2 in zip(c1[1:], c2[1:]):
-        if abs(note1 - note2) >= 7:  # 7 equals 5° interval
-            res += .7
-
+    for note1, note2 in zip(c1, c2):
+        if abs(note1 - note2) == 7:  # 7 equals 5° interval
+            res -= 1
     return res
-'''fix this'''
-def evalNumErr(ton, individual):
-    #Fitness function
+
+def evaluteError(chords):
+    #passes pop.chords
     res = 0
-    for prev, item, nex in neighborhood(individual):
-        res += check_interval(item[0])
-        if prev is None:
-            if item[1] != 0:
-                res += 6
+    for i in range(len(chords)):
+        res += check_interval(chords[i])
+        if chords[i-1] is None:
             continue
         else:
-            if prev[1] in [4, 6] and item[1] in [3, 1]:
-                res += 20
-            res += check_2_chords(prev[0], item[0])
-        if nex is None:
-            if item[1] in [1, 2, 3, 4, 5, 6]:
-                res += 6
-    return (res,)
+            res += check_2_chords(chords[i],chords[i-1])
+    return res
 
 problem= structure()
 ##definition of cost function
-problem.costfunc = evalNumErr
+problem.costfunc = evaluteError
 ##defenition of search space
 problem.nvar = 4
-problem.varmin = 0 
-problem.varmax = 1 
+problem.key = "CnM" # C natural Major
 
 #GA Parameters
 params=structure()

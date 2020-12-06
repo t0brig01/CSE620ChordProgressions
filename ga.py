@@ -13,9 +13,8 @@ def run(problem, params, method = "classic"):
     # Problem Informtaion
     costfunc = problem.costfunc
     nvar = problem.nvar
-    varmin = problem.varmin
-    varmax = problem.varmax
-    
+    key = problem.key
+
     # Parameters
     maxit = params.maxit
     npop = params.npop
@@ -34,16 +33,16 @@ def run(problem, params, method = "classic"):
     
     # BestSolution Ever found
     bestsol = empty_individual.deepcopy()
-    bestsol.cost = np.NINF
+    bestsol.cost = np.inf
 
     # WorstSolution Ever found
     worstsol = empty_individual.deepcopy()
-    worstsol.cost = np.inf
+    worstsol.cost = np.NINF
     
     # Initialiaze Population
     pop = empty_individual.repeat(npop)
     for i in range (npop):
-        pop[i].chords = initChords(varmax,varmin,nvar)
+        pop[i].chords = initChords(getNotesInKey(key),nvar)
         pop[i].cost=costfunc(pop[i].chords)
         if pop[i].cost < bestsol.cost:
             bestsol = pop[i].deepcopy()
@@ -88,8 +87,8 @@ def run(problem, params, method = "classic"):
             c2=mutate(c2, mu)
             
             # Apply Bounds
-            apply_bounds(c1, varmin, varmax)
-            apply_bounds(c2, varmin, varmax)
+            apply_bounds(c1, 48, 83)
+            apply_bounds(c2, 48, 83)
             
             #Evaluate First Offspring
             c1.cost = costfunc(c1.chords)
@@ -178,11 +177,27 @@ def removearray(L,arr):
         raise ValueError('array not found in list.')
     return L
 
-def initChords(varmax,varmin,nvar):
+def initChords(key,nvar):
     chordprog = []
     for _ in range(0,nvar):
-        chord = np.random.randint(varmin,varmax,size=(2))
-        chord.sort()
-        chordprog.append(chord)
+        chordprog.append(createChord(key))
 
     return chordprog
+
+def createChord(key):
+    n1 = np.random.choice(key) * np.random.choice([5,6,7])
+    n2 = np.random.choice(key) * np.random.choice([5,6,7])
+
+    chord = []
+    if n1 == n2:
+        chord.append(n1)
+        chord.append(n2)
+    else:
+        chord.append(min(n1,n2))
+        chord.append(max(n1,n2))
+    return chord
+
+def getNotesInKey(keyString):
+    '''FOR NOW WE ARE ONLY DOING C NATURAL MAJOR'''
+    key = [0,2,4,5,7,9,11] 
+    return key
