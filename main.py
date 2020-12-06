@@ -5,12 +5,14 @@ import matplotlib.pyplot as plt
 from ypstruct import structure
 import ga
 import csv
+import abjad 
+
 
 #parameters
 pM = 0.1
 pC = 0.1
 trial_count = 1
-
+convert = ['c','cs','d','ds','e','f','fs','g','gs','a','as','b']
 # OPTIONS_M = ((0, -3, 5),
 #              (0, -3, 5),
 #              (0, -4, 5),
@@ -65,6 +67,8 @@ def check_2_chords(c1, c2):
 def evaluteError(chords):
     #passes pop.chords
     res = 0
+    if len(chords) < 4:
+        res += 100
     for i in range(len(chords)):
         res += check_interval(chords[i])
         if chords[i-1] is None:
@@ -72,6 +76,24 @@ def evaluteError(chords):
         else:
             res += check_2_chords(chords[i],chords[i-1])
     return res
+
+def ChordProgToPic(pop):
+    chords = []
+    for chord in pop.chords:
+        chordString = ""
+        for note in chord:
+            chordString += convert[note%12]
+            if np.floor(note/12)-1 == 3:
+                chordString += "' "
+            elif np.floor(note/12)-1 == 4:
+                chordString += "'' "
+            elif np.floor(note/12)-1 == 5:
+                chordString += "''' "
+            else:
+                chordString += " "
+        chords.append(abjad.Chord("<" + chordString + ">4"))
+    container = abjad.Container(chords)
+    abjad.show(container)
 
 problem= structure()
 ##definition of cost function
@@ -113,6 +135,7 @@ print("Max: " + str(np.max(max)))
 print("Min: "+ str(np.min(avg)))
 print("Average: "+ str(sum(avg)/10))
 print(out.bestsol)
+ChordProgToPic(out.bestsol)
 #Results
 #plt.plot(out.bestcost)
 # plt.plot(out.bestcost, label = "best")

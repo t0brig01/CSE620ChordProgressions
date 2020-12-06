@@ -83,8 +83,8 @@ def run(problem, params, method = "classic"):
             c1, c2=crossover(p1, p2, gamma)
             
             # Perform Mutation
-            c1=mutate(c1, mu)
-            c2=mutate(c2, mu)
+            c1=mutate(c1, key, mu)
+            c2=mutate(c2, key, mu)
             
             # Apply Bounds
             apply_bounds(c1, 48, 83)
@@ -146,13 +146,10 @@ def crossover(p1, p2, gamma=0.1):
         c2.chords = c2f + c1l
     return c1, c2
 
-def mutate(x, mu):
+def mutate(x, key, mu):
     y = x.deepcopy()
     if np.random.rand() < mu:
-        if np.random.rand() <= .5:
-            y.chords[np.random.randint(0,len(y.chords))][np.random.randint(0,len(y.chords[0]))] = y.chords[np.random.randint(0,len(y.chords))][np.random.randint(0,len(y.chords[0]))] - 1
-        if np.random.rand() >= .5:
-            y.chords[np.random.randint(0,len(y.chords))][np.random.randint(0,len(y.chords[0]))] = y.chords[np.random.randint(0,len(y.chords))][np.random.randint(0,len(y.chords[0]))] + 1
+        y.chords[np.random.randint(0,len(y.chords))] = createChord(getNotesInKey(key))
     return y
 
 def apply_bounds(x, varmin, varmax):
