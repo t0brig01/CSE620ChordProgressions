@@ -1,12 +1,10 @@
 import numpy as np
-import numpy as np
 import math
 import matplotlib.pyplot as plt
 from ypstruct import structure
 import ga
 import csv
-import abjad 
-
+import abjad
 
 #parameters
 pM = 0.1
