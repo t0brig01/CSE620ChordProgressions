@@ -1,5 +1,6 @@
 from midiutil.MidiFile import MIDIFile
 
+#generate midi file
 def run(pop):
     mf = MIDIFile(1)
     track = 0
@@ -16,5 +17,5 @@ def run(pop):
             mf.addNote(track,channel,note,i,1,volume)
         i += 1
     
-    with open ("output.mid",'wb') as outf:
+    with open("output.mid",'wb') as outf:
         mf.writeFile(outf)
