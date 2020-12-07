@@ -6,6 +6,7 @@ from ypstruct import structure
 import ga
 import csv
 import abjad 
+import midi
 
 
 #parameters
@@ -13,24 +14,6 @@ pM = 0.1
 pC = 0.1
 trial_count = 1
 convert = ['c','cs','d','ds','e','f','fs','g','gs','a','as','b']
-# OPTIONS_M = ((0, -3, 5),
-#              (0, -3, 5),
-#              (0, -4, 5),
-#              (0, -3, 6),
-#              (0, -3, 5),
-#              (0, -4, 5),
-#              (0, -4, 5)
-#              )
-# OPTIONS_m = ((0, -4, 5),
-#              (0, -4, 5),
-#              (0, -3, 5),
-#              (0, -3, 5),
-#              (0, -4, 5),
-#              (0, -3, 6),
-#              (0, 5)
-#              )
-# MOD_M = ('M', 'm', 'm', 'M', 'M', 'm', 'd')
-# MOD_m = ('m', 'd', 'M', 'm', 'M', 'M', 'M')
 
 def check_interval(chord):
     res = 0
@@ -136,6 +119,7 @@ print("Min: "+ str(np.min(avg)))
 print("Average: "+ str(sum(avg)/10))
 print(out.bestsol)
 ChordProgToPic(out.bestsol)
+midi.run(out.bestsol)
 input("Press enter to exit...")
 #Results
 #plt.plot(out.bestcost)
