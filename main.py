@@ -22,6 +22,12 @@ def check_interval(chord):
     #same note = bad
     if chord[0] == chord[1]:
         res += 15
+    #0 and 11 sounds bad
+    if chord[1] - chord[0] == 11:
+        res += 15
+    #Clashing bad
+    if chord[1] - chord[0] == 1 or chord[1] - chord[0] == 2:
+        res += 15
     return res
 
 def check_2_chords(c1, c2):
