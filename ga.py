@@ -21,6 +21,9 @@ def run(problem, params, method = "classic"):
     beta = params.beta
     pc =params.pc
 
+    varmin = 48
+    varmax = 83
+
     nc = int(np.round(pc*npop/2)*2) 
     gamma = params.gamma
     mu = params.mu
@@ -63,10 +66,6 @@ def run(problem, params, method = "classic"):
             costs = costs/avg_cost
         probs = np.exp(-beta*costs)
 
-        #Niching methods
-        # if method == "crowding":
-        #     crowding(pop,npop,gamma,mu,sigma,varmin,varmax,costfunc)
-
         popc = []
         for _ in range(nc//2):
             
@@ -87,8 +86,8 @@ def run(problem, params, method = "classic"):
             c2=mutate(c2, key, mu)
             
             # Apply Bounds
-            apply_bounds(c1, 48, 83)
-            apply_bounds(c2, 48, 83)
+            apply_bounds(c1, varmin, varmax)
+            apply_bounds(c2, varmin, varmax)
             
             #Evaluate First Offspring
             c1.cost = costfunc(c1.chords,nvar)

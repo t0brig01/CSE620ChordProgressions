@@ -114,6 +114,9 @@ max = []
 min = []
 avg = []
 
+#Sharing
+#Sharing
+#Sharing
 while x < trial_count:
     #Run GA
     out = ga.run(problem, params,"classic")
@@ -126,9 +129,6 @@ while x < trial_count:
 print("Max: " + str(np.max(max)))
 print("Min: " + str(np.min(avg)))
 print("Average: " + str(sum(avg) / 10))
-print(out.bestsol)
-ChordProgToPic(out.bestsol)
-midi.run(out.bestsol)
 
 #play midi output
 pygame.init()
@@ -136,4 +136,6 @@ pygame.mixer.music.load("output.mid")
 pygame.mixer.music.play()
 length = pygame.time.get_ticks()
 while pygame.mixer.music.get_busy():
-    pygame.time.wait(length)
+    pygame.time.wait(length)# plt.grid(True)
+# plt.legend()
+# plt.show()
