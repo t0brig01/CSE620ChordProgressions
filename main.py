@@ -127,6 +127,10 @@ print("Max: " + str(np.max(max)))
 print("Min: " + str(np.min(avg)))
 print("Average: " + str(sum(avg) / 10))
 
+print(out.bestsol)
+ChordProgToPic(out.bestsol)
+midi.run(out.bestsol)
+
 #play midi output
 pygame.init()
 pygame.mixer.music.load("output.mid")
