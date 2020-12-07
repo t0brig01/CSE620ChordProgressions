@@ -1,5 +1,4 @@
 import numpy as np
-import numpy as np
 import math
 import matplotlib.pyplot as plt
 from ypstruct import structure
