@@ -43,7 +43,7 @@ def run(problem, params, method = "classic"):
     pop = empty_individual.repeat(npop)
     for i in range (npop):
         pop[i].chords = initChords(getNotesInKey(key),nvar)
-        pop[i].cost=costfunc(pop[i].chords)
+        pop[i].cost=costfunc(pop[i].chords,nvar)
         if pop[i].cost < bestsol.cost:
             bestsol = pop[i].deepcopy()
         if pop[i].cost > worstsol.cost:
@@ -91,14 +91,14 @@ def run(problem, params, method = "classic"):
             apply_bounds(c2, 48, 83)
             
             #Evaluate First Offspring
-            c1.cost = costfunc(c1.chords)
+            c1.cost = costfunc(c1.chords,nvar)
             if c1.cost < bestsol.cost:
                 bestsol = c1.deepcopy()
             if c1.cost > worstsol.cost:
                 worstsol = c1.deepcopy()
             
             #Evaluate Second Offspring
-            c2.cost = costfunc(c2.chords)
+            c2.cost = costfunc(c2.chords,nvar)
             if c2.cost < bestsol.cost:
                 bestsol = c2.deepcopy()
             if c2.cost > worstsol.cost:

@@ -64,10 +64,10 @@ def check_2_chords(c1, c2):
             res -= 1
     return res
 
-def evaluteError(chords):
+def evaluteError(chords,nvar):
     #passes pop.chords
     res = 0
-    if len(chords) < 4:
+    if len(chords) < nvar:
         res += 100
     for i in range(len(chords)):
         res += check_interval(chords[i])
@@ -99,7 +99,7 @@ problem= structure()
 ##definition of cost function
 problem.costfunc = evaluteError
 ##defenition of search space
-problem.nvar = 4
+problem.nvar = 8
 problem.key = "CnM" # C natural Major
 
 #GA Parameters
@@ -136,6 +136,7 @@ print("Min: "+ str(np.min(avg)))
 print("Average: "+ str(sum(avg)/10))
 print(out.bestsol)
 ChordProgToPic(out.bestsol)
+input("Press enter to exit...")
 #Results
 #plt.plot(out.bestcost)
 # plt.plot(out.bestcost, label = "best")
