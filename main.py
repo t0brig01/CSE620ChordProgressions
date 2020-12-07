@@ -7,7 +7,6 @@ import csv
 import abjad 
 import midi
 
-
 #parameters
 pM = 0.1
 pC = 0.1
@@ -109,7 +108,6 @@ max = []
 min = []
 avg = []
 #Classic
-#Sharing
 while x < trial_count:
     #Run GA
     out = ga.run(problem, params,"classic")
@@ -126,14 +124,3 @@ print(out.bestsol)
 ChordProgToPic(out.bestsol)
 midi.run(out.bestsol)
 input("Press enter to exit...")
-#Results
-#plt.plot(out.bestcost)
-# plt.plot(out.bestcost, label = "best")
-# plt.plot(out.worstcost, label = "worst")
-# plt.axis([0,params.maxit,0,1])
-# plt.xlabel("Iteration")
-# plt.ylabel("Best Cost")
-# plt.title("Genetic Algorithm (GA)")
-# plt.grid(True)
-# plt.legend()
-# plt.show()
