@@ -9,8 +9,8 @@ import midi
 import pygame
 
 #parameters
-pM = 0.1
-pC = 0.1
+pM = 0.01
+pC = 0.8
 trial_count = 1
 convert = ['c','cs','d','ds','e','f','fs','g','gs','a','as','b']
 
@@ -124,8 +124,8 @@ while x < trial_count:
     x += 1
 
 print("Max: " + str(np.max(max)))
-print("Min: " + str(np.min(avg)))
-print("Average: " + str(sum(avg) / 10))
+print("Min: " + str(np.min(min)))
+print("Average: " + str(sum(avg) / trial_count))
 
 print(out.bestsol)
 ChordProgToPic(out.bestsol)
