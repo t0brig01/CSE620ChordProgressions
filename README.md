@@ -18,11 +18,8 @@ After installing the packages and programs above, simply run `python main.py` in
 Make sure sound is on to hear the chord progression that was created!
 
 ## Sample Outputs ##
-Every iteration, it will output the best cost and worst cost. It is currently set to have 100 iterations every run, and only one run is set right now. This multiple runs was mainly for testing. 
 
 ```
-Iteration 99: Best Cost = -8.0 / Worst Cost = -6.0
-Run 1 done
 Max: 30.0
 Min: -1.33
 Average: -0.133
