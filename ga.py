@@ -8,7 +8,7 @@ Created on Sat Nov 21 15:09:33 2020
 import numpy as np
 from ypstruct import structure
 
-def run(problem, params, method = "classic"):
+def run(problem, params, method="classic"):
     
     # Problem Informtaion
     costfunc = problem.costfunc
@@ -19,19 +19,19 @@ def run(problem, params, method = "classic"):
     maxit = params.maxit
     npop = params.npop
     beta = params.beta
-    pc =params.pc
+    pc = params.pc
 
     varmin = 48
     varmax = 83
 
-    nc = int(np.round(pc*npop/2)*2) 
+    nc = int(np.round(pc * npop / 2) * 2) 
     gamma = params.gamma
     mu = params.mu
     
     
     # Empty Individual Template
     empty_individual = structure()
-    empty_individual.chords= None
+    empty_individual.chords = None
     empty_individual.cost = None
     
     # BestSolution Ever found
@@ -44,9 +44,9 @@ def run(problem, params, method = "classic"):
     
     # Initialiaze Population
     pop = empty_individual.repeat(npop)
-    for i in range (npop):
+    for i in range(npop):
         pop[i].chords = initChords(getNotesInKey(key),nvar)
-        pop[i].cost=costfunc(pop[i].chords,nvar)
+        pop[i].cost = costfunc(pop[i].chords,nvar)
         if pop[i].cost < bestsol.cost:
             bestsol = pop[i].deepcopy()
         if pop[i].cost > worstsol.cost:
@@ -61,13 +61,13 @@ def run(problem, params, method = "classic"):
     # Main Loop of GA
     for it in range(maxit):
         costs = np.array([ x.cost for x in pop])
-        avg_cost= np.mean(costs)
+        avg_cost = np.mean(costs)
         if avg_cost != 0:
-            costs = costs/avg_cost
-        probs = np.exp(-beta*costs)
+            costs = costs / avg_cost
+        probs = np.exp(-beta * costs)
 
         popc = []
-        for _ in range(nc//2):
+        for _ in range(nc // 2):
             
             # Parent Selection (Random)
             q = np.random.permutation(npop)
@@ -79,11 +79,11 @@ def run(problem, params, method = "classic"):
             p2 = pop[roulette_wheel_selection(probs)]
             
             # Perform Crossover
-            c1, c2=crossover(p1, p2, gamma)
+            c1, c2 = crossover(p1, p2, gamma)
             
             # Perform Mutation
-            c1=mutate(c1, key, mu)
-            c2=mutate(c2, key, mu)
+            c1 = mutate(c1, key, mu)
+            c2 = mutate(c2, key, mu)
             
             # Apply Bounds
             apply_bounds(c1, varmin, varmax)
@@ -119,12 +119,13 @@ def run(problem, params, method = "classic"):
         worstcost[it] = pop[-1].cost
         
         #Show Iteration Information
-        print("Iteration {}: Best Cost = {} / Worst Cost = {}".format(it, bestcost[it], worstcost[it]))
+#        print("Iteration {}: Best Cost = {} / Worst Cost = {}".format(it,
+#        bestcost[it], worstcost[it]))
     
             
     #Output
     out = structure()
-    out.pop=pop
+    out.pop = pop
     out.bestsol = bestsol
     out.bestcost = bestcost 
     out.worstsol = worstsol
@@ -157,8 +158,8 @@ def apply_bounds(x, varmin, varmax):
         chord = np.minimum(chord, varmax)
     
 def roulette_wheel_selection(p):
-    c=np.cumsum(p)
-    r=sum(p)*np.random.rand()
+    c = np.cumsum(p)
+    r = sum(p) * np.random.rand()
     ind = np.argwhere(r <= c)
     return ind[0][0]
 
@@ -181,8 +182,8 @@ def initChords(key,nvar):
     return chordprog
 
 def createChord(key):
-    n1 = np.random.choice(key) + (np.random.choice([4,5,6])*12)
-    n2 = np.random.choice(key) + (np.random.choice([4,5,6])*12)
+    n1 = np.random.choice(key) + (np.random.choice([4,5,6]) * 12)
+    n2 = np.random.choice(key) + (np.random.choice([4,5,6]) * 12)
 
     chord = []
     if n1 == n2:
